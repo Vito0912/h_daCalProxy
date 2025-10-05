@@ -18,7 +18,15 @@ app.use(limiter);
 app.get("/{*any}", async (req, res) => {
   console.log("Request received");
 
-  const calPath = decodeURIComponent(req.originalUrl.replace(/^\/+/, ""));
+  const rawPath = decodeURIComponent(
+    req.originalUrl.replace(/^\/+/, ""),
+  ).trim();
+
+  let calPath = rawPath.replace(/^(https?:)\/+/, "$1//");
+
+  if (!/^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(calPath)) {
+    calPath = "https://" + calPath;
+  }
 
   if (
     !calPath.includes(
