@@ -8,3 +8,9 @@ Sadly, importing the calendar directly, for example from a Nextcloud, is not pos
 
 Start the server, then access `http://localhost:3000/<full-calendar-url>` to get your calendar. You can use this URL in your calendar application.  
 A hosted instance is available at https://h-da-calproxy.vito0912.de/. Just append your calendar URL to this address. Requests are logged. Please see the [privacy policy](https://auth.dittmar-ldk.de/if/flow/datenschutz/).
+
+## Environment Variables
+
+- `PORT`: Port to run the server on (default: `3000`)
+- `RATE_LIMIT`: Number of requests allowed per hour per IP (default: `5`)
+- `TRUST_PROXY`: Whether to trust the `X-Forwarded-For` header (default: `false`) Set to the ip address of your proxy if you are behind one.

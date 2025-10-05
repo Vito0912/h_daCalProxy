@@ -7,11 +7,11 @@ const port: number = Number(process.env.PORT) || 3000;
 
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
-  limit: 2,
+  limit: Number(process.env.RATE_LIMIT) || 5,
   standardHeaders: "draft-8",
 });
 
-app.set("trust proxy", true);
+app.set("trust proxy", process.env.TRUST_PROXY || false);
 
 app.use(limiter);
 
@@ -29,12 +29,16 @@ app.get("/{*any}", async (req, res) => {
   }
 
   if (
-    !calPath.includes(
-      "https://my.h-da.de:443/qisserver/pages/cm/exa/timetable/individualTimetableCalendarExport.faces?user=",
+    !(
+      calPath.includes(
+        "https://my.h-da.de:443/qisserver/pages/cm/exa/timetable/individualTimetableCalendarExport.faces?user=",
+      ) ||
+      calPath.includes(
+        "https://my.h-da.de/qisserver/pages/cm/exa/timetable/individualTimetableCalendarExport.faces?user=",
+      )
     )
   ) {
     res.status(400).send("Invalid calendar URL");
-    console.log("Invalid calendar URL:", calPath);
     return;
   }
 
