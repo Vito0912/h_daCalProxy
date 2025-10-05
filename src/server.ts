@@ -11,6 +11,8 @@ const limiter = rateLimit({
   standardHeaders: "draft-8",
 });
 
+app.set("trust proxy", true);
+
 app.use(limiter);
 
 app.get("/{*any}", async (req, res) => {
@@ -24,6 +26,7 @@ app.get("/{*any}", async (req, res) => {
     )
   ) {
     res.status(400).send("Invalid calendar URL");
+    console.log("Invalid calendar URL:", calPath);
     return;
   }
 
